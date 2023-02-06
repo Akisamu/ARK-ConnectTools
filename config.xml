@@ -1,0 +1,23 @@
+<Data>
+    <Default device_name=""/>
+    <List>
+        <Device device_name="1">
+            <Local_host>2</Local_host>
+            <Local_name>3</Local_name>
+            <Remote_host>4</Remote_host>
+            <Remote_name>5</Remote_name>
+        </Device>
+        <Device device_name="2">
+            <Local_host>2</Local_host>
+            <Local_name>3</Local_name>
+            <Remote_host>4</Remote_host>
+            <Remote_name>5</Remote_name>
+        </Device>
+        <Device device_name="3">
+            <Local_host>2</Local_host>
+            <Local_name>3</Local_name>
+            <Remote_host>4</Remote_host>
+            <Remote_name>5</Remote_name>
+        </Device>
+    </List>
+</Data>
