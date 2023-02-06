@@ -2,9 +2,7 @@
 
 class UserInfo:
 
-    def __init__(self, local_host='127.0.0.1', local_name='', remote_host='', remote_name=''):
-        self.local_host = local_host
-        self.local_name = local_name
+    def __init__(self, remote_host='', remote_name=''):
         self.remote_host = remote_host
         self.remote_name = remote_name
 

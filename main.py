@@ -39,7 +39,8 @@ def search_all() ->None:
     li = io.get_list()
     key_list = list(list(li.keys()))
     for item in key_list:
-        print(li[str(item)].local_host)
+        print(li[str(item)].remote_host)
+        print(li[str(item)].remote_name)
 
 
 if __name__ == '__main__':

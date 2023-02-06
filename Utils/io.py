@@ -30,16 +30,12 @@ def init_xml() -> None:
     tree.write('config.xml')
 
 
-def add_data(device: str, local_host: str, local_name: str, remote_host: str, remote_name: str) -> None:
+def add_data(device: str, remote_host: str, remote_name: str) -> None:
     tree = et.parse('config.xml')
     root = tree.getroot()
     for item in root.iter('List'):
         dev = et.SubElement(item, 'Device')
         dev.set('device_name', device)
-        lh = et.SubElement(dev, 'Local_host')
-        lh.text = local_host
-        ln = et.SubElement(dev, 'Local_name')
-        ln.text = local_name
         rh = et.SubElement(dev, 'Remote_host')
         rh.text = remote_host
         rn = et.SubElement(dev, 'Remote_name')
@@ -68,15 +64,11 @@ def get_list() -> dict:
                 for attr in list(ite.iter()):
                     if attr.tag == "Device":
                         continue
-                    elif attr.tag == "Local_host":
-                        lh = attr.text
-                    elif attr.tag == "Local_name":
-                        ln = attr.text
                     elif attr.tag == "Remote_host":
                         rh = attr.text
                     elif attr.tag == "Remote_name":
                         rn = attr.text
                 re[ite.attrib['device_name']] = UserInfo(
-                    lh, ln, rh, rn
+                    rh, rn
                 )
             return re
