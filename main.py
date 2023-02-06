@@ -1,7 +1,7 @@
 import Data
 import sys
 import argparse
-
+from prettytable import PrettyTable
 from Utils import *
 from Utils import io
 
@@ -35,12 +35,13 @@ show_parser.description = 'sample: msk --scp this [that] [path]' + '\n' +\
                           '        msk --ssh [dev]|[target]'
 
 
-def search_all() ->None:
+def search_all() -> None:
     li = io.get_list()
     key_list = list(list(li.keys()))
+    table = PrettyTable(['设备名称', '用户名', 'host'])
     for item in key_list:
-        print(li[str(item)].remote_host)
-        print(li[str(item)].remote_name)
+        table.add_row([str(item), li[str(item)].remote_name, li[str(item)].remote_host])
+    print(table)
 
 
 if __name__ == '__main__':

@@ -2,14 +2,10 @@
     <Default device_name=""/>
     <List>
         <Device device_name="respberry">
-            <Local_host>127.0.0.1</Local_host>
-            <Local_name>akisamu</Local_name>
             <Remote_host>192.168.3.10</Remote_host>
             <Remote_name>akisamu</Remote_name>
         </Device>
         <Device device_name="hp">
-            <Local_host>127.0.0.1</Local_host>
-            <Local_name>akisamu</Local_name>
             <Remote_host>192.168.3.6</Remote_host>
             <Remote_name>nash</Remote_name>
         </Device>
