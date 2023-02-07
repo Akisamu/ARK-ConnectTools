@@ -1,13 +1,5 @@
 <Data>
-    <Default device_name=""/>
-    <List>
-        <Device device_name="respberry">
-            <Remote_host>192.168.3.10</Remote_host>
-            <Remote_name>akisamu</Remote_name>
-        </Device>
-        <Device device_name="hp">
-            <Remote_host>192.168.3.6</Remote_host>
-            <Remote_name>nash</Remote_name>
-        </Device>
-    </List>
+    <Version>0.0.1</Version>
+    <Default device_name="akisamu" />
+    <List><Device device_name="akisamu"><Remote_host>192.168.3.10</Remote_host><Remote_name>akisamu</Remote_name></Device></List>
 </Data>

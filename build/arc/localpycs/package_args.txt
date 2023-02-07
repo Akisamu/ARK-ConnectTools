@@ -1,0 +1,1 @@
+pyinstaller main.py -p Data.py,set.py,Utils/io.py --icon=icon.ico -D -c --name=arc

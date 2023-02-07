@@ -1,0 +1,48 @@
+('G:\\Documents\\PyCharm_Projects\\ssh tools\\build\\arc\\arc.pkg',
+ {'BINARY': 1,
+  'DATA': 1,
+  'EXECUTABLE': 1,
+  'EXTENSION': 1,
+  'PYMODULE': 1,
+  'PYSOURCE': 1,
+  'PYZ': 0,
+  'SPLASH': 1},
+ [('PYZ-00.pyz',
+   'G:\\Documents\\PyCharm_Projects\\ssh tools\\build\\arc\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\build\\arc\\localpycs\\struct.pyc',
+   'PYMODULE'),
+  ('pyimod01_archive',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\build\\arc\\localpycs\\pyimod01_archive.pyc',
+   'PYMODULE'),
+  ('pyimod02_importers',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\build\\arc\\localpycs\\pyimod02_importers.pyc',
+   'PYMODULE'),
+  ('pyimod03_ctypes',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\build\\arc\\localpycs\\pyimod03_ctypes.pyc',
+   'PYMODULE'),
+  ('pyimod04_pywin32',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\build\\arc\\localpycs\\pyimod04_pywin32.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\venv\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('pyi_rth_inspect',
+   'G:\\Documents\\PyCharm_Projects\\ssh '
+   'tools\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
+   'PYSOURCE'),
+  ('main', 'G:\\Documents\\PyCharm_Projects\\ssh tools\\main.py', 'PYSOURCE')],
+ True,
+ False,
+ False,
+ [],
+ None,
+ None,
+ None)

@@ -3,6 +3,9 @@ import xml.etree.ElementTree as et
 from Data import UserInfo
 
 
+version = '0.0.1'
+
+
 def check_file() -> None:
     if not os.path.exists('config.xml'):
         file = open('config.xml', 'a')
@@ -10,19 +13,18 @@ def check_file() -> None:
         init_xml()
 
 
-
 # constructor:
 # - Root
 # -- Default attr=device_name
 # -- List
-# --- Device attr=name
-# ---- local_host
-# ---- local_name
+# --- Device attr=device_name
 # ---- remote_host
 # ---- remote_name
 
 def init_xml() -> None:
     root = et.Element('Data')
+    ver = et.SubElement(root, 'Version')
+    ver.text = version
     default = et.SubElement(root, 'Default')
     default.set('device_name', '')
     et.SubElement(root, 'List')
@@ -51,6 +53,13 @@ def set_default(device: str) -> None:
     tree.write('config.xml')
 
 
+def get_default() -> str:
+    tree = et.parse('config.xml')
+    root = tree.getroot()
+    for item in root.iter('Default'):
+        return item.attrib['device_name']
+
+
 def get_list() -> dict:
     tree = et.parse('config.xml')
     root = tree.getroot()
@@ -60,7 +69,7 @@ def get_list() -> dict:
             return re
         else:
             for ite in root.iter('Device'):
-                lh, ln, rh, rn = '', '', '', ''
+                rh, rn = '', ''
                 for attr in list(ite.iter()):
                     if attr.tag == "Device":
                         continue
@@ -72,3 +81,13 @@ def get_list() -> dict:
                     rh, rn
                 )
             return re
+
+
+def del_data(name: str):
+    tree = et.parse('config.xml')
+    root = tree.getroot()
+    for item in root.iter('Device'):
+        if item.attrib['device_name'] == name:
+            root.remove(item)
+    tree.write('config.xml')
+
