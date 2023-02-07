@@ -1,5 +1,0 @@
-<Data>
-    <Version>0.0.1</Version>
-    <Default device_name="akisamu" />
-    <List><Device device_name="akisamu"><Remote_host>192.168.3.10</Remote_host><Remote_name>akisamu</Remote_name></Device></List>
-</Data>

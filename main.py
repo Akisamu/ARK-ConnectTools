@@ -36,8 +36,13 @@ scp_sub_parser.add_argument('-a', '--that', nargs='?', default='', dest='that', 
 scp_sub_parser.add_argument('-t', '--target', nargs='?', default='', dest='target', type=str,
                             help='Input the username@host:port')
 
+# Documents brunch
+hist_parser = argparse.ArgumentParser(parents=[root_parser], add_help=False)
+hist_parser.add_argument('-H', '--history', action='store_true', help="List the connection history.")
+hist_parser.add_argument('-L', '--list', action='store_true', help="List all connect.")
+
 # show brunch
-show_parser = argparse.ArgumentParser(parents=[set_parser, ssh_sub_parser, scp_sub_parser], add_help=False)
+show_parser = argparse.ArgumentParser(parents=[set_parser, ssh_sub_parser, scp_sub_parser, hist_parser], add_help=False)
 show_parser.description = 'sample: msk --scp this [that] [path]' + '\n' + \
                           '        msk --ssh [dev]|[target]'
 
@@ -63,6 +68,46 @@ def change_default() -> None:
     print('      ' + 'Change successful!')
 
 
+def i_set(sel: str) -> None:
+    # Delete the connected history.
+    if sel == '4':
+        print('      确定删除历史记录吗？')
+        print('      MAKE SURE YOU ARE DELETING THE DATA')
+        print('      本当にデータを消すことは決まりましたが？')
+        tas = input('      Please input    YES/n       :   ')
+        if tas == "YES":
+            io.delete_history()
+            print('------ Delete Successful.------ ')
+        else:
+            print('cancel')
+            sys.exit()
+    # Delete a device.
+    elif sel == '3':
+        se = str(input('      Please entry the device you want to delete: '))
+        if se in dev_name_list:
+            io.del_data(se)
+            print('------ Delete Successful.------ ')
+        else:
+            print("      There's no such device.")
+        show_setting()
+        i_set(input())
+    # Add a device.
+    elif sel == '2':
+        add_dev()
+        print('      ' + 'Adding successful!')
+        search_all()
+        show_setting()
+        i_set(input())
+    # Change default device.
+    elif sel == '1':
+        change_default()
+        show_setting()
+        i_set(input())
+    # Exit
+    elif sel == '0':
+        sys.exit()
+
+
 if __name__ == '__main__':
     # initialize and check
     argvs = sys.argv[1:]
@@ -75,30 +120,26 @@ if __name__ == '__main__':
     elif argvs[0] == '--setting':
         show_setting()
         select = str(input())
+        i_set(select)
         # Show the device list.
-        if select == '1':
-            search_all()
-        # Add a device.
-        elif select == '2':
-            add_dev()
-            print('      ' + 'Adding successful!')
-            search_all()
-        # Delete a device.
-        elif select == '3':
-            remove_dev()
-        # Change default device.
-        elif select == '4':
-            change_default()
-        # Exit
-        elif select == '0':
-            exit(0)
+    elif argvs[0] == '-L' or argvs[0] == '--list':
+        search_all()
+    elif argvs[0] == '-H' \
+                     '' or argvs[0] == '--history':
+        search_all_history(io.get_history())
     elif argvs[0] == '--ssh':
         arg = ssh_sub_parser.parse_args().__dict__
         if arg['link'] != '':
+            info = arg['link'].split('@')
+            if len(info) == 2:
+                io.take_history('Temporary', info[1], info[0], 'ssh')
+            else:
+                io.take_history('Temporary', '? ? ?', '? ? ?', 'ssh')
             os.system('ssh ' + arg['link'])
         elif arg['device'] != '':
             d = arg['device']
             if d in dev_name_list:
+                io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'ssh')
                 os.system('ssh ' + dev_dict[d].remote_name + "@" + dev_dict[d].remote_host)
             else:
                 print('      Device is no exist, please check the setting.')
@@ -106,29 +147,53 @@ if __name__ == '__main__':
         else:
             d = io.get_default()
             if d in dev_name_list:
+                io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'ssh')
                 os.system('ssh ' + dev_dict[d].remote_name + "@" + dev_dict[d].remote_host)
             else:
                 show_default_dev(io.get_default(), io.get_list())
                 print('      The default setting is error.')
-        pass
     elif argvs[0] == '--scp':
         arg = scp_sub_parser.parse_args().__dict__
-        print(scp_sub_parser.parse_args())
-        i = input("      Please entry the document's path") + ' '
+        i = arg['this'] + ' '
         com = 'scp -r '
         def_that = '~/Documents'
         if arg['target'] != '':
+            tar = arg['target']
+            info = arg['target'].split('@')
             if arg['that'] != '':
-                com = com + i + arg['target'] + ":" + arg['that']
+                if arg['target'] in dev_name_list:
+                    io.take_history(arg['target'], dev_dict[arg['target']].remote_host,
+                                    dev_dict[arg['target']].remote_name, 'scp')
+                    com = com + i + dev_dict[arg['target']].remote_name + '@' + dev_dict[
+                        arg['target']].remote_host + ":" + arg['that']
+                elif len(info) == 2:
+                    io.take_history('Temporary', info[1], info[0], 'scp')
+                    com = com + i + arg['target'] + ":" + arg['that']
+                else:
+                    io.take_history('Temporary', '? ? ?', '? ? ?', 'scp')
+                    com = com + i + arg['target'] + ":" + arg['that']
             else:
-                com = com + i + arg['target'] + ":" + def_that
+                if arg['target'] in dev_name_list:
+                    io.take_history(arg['target'], dev_dict[arg['target']].remote_host,
+                                    dev_dict[arg['target']].remote_name, 'scp')
+                    com = com + i + dev_dict[arg['target']].remote_name + '@' + dev_dict[
+                        arg['target']].remote_host + ":" + def_that
+                elif len(info) == 2:
+                    io.take_history('Temporary', info[1], info[0], 'scp')
+                    com = com + i + arg['target'] + ":" + def_that
+                else:
+                    io.take_history('Temporary', '? ? ?', '? ? ?', 'scp')
+                    com = com + i + arg['target'] + ":" + def_that
         else:
             d = io.get_default()
             if d in dev_name_list:
                 if arg['that'] != '':
+                    io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'scp')
                     com = com + i + dev_dict[d].remote_name + '@' + dev_dict[d].remote_host + ":" + arg['that']
                 else:
+                    io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'scp')
                     com = com + i + dev_dict[d].remote_name + '@' + dev_dict[d].remote_host + ":" + def_that
+        print(com)
         os.system(com)
     elif argvs[0] == '-v' or argvs[0] == '--version':
         print('      ' + 'This version is: ' + io.version)
