@@ -108,6 +108,14 @@ def i_set(sel: str) -> None:
         sys.exit()
 
 
+# get url command currently
+def cor_url(ori: str) -> str:
+    if ':' in ori:
+        return ori.split(':')[0] + ' -p ' + ori.split(':')[1]
+    else:
+        return ori
+
+
 if __name__ == '__main__':
     # initialize and check
     argvs = sys.argv[1:]
@@ -135,12 +143,12 @@ if __name__ == '__main__':
                 io.take_history('Temporary', info[1], info[0], 'ssh')
             else:
                 io.take_history('Temporary', '? ? ?', '? ? ?', 'ssh')
-            os.system('ssh ' + arg['link'])
+            os.system('ssh ' + cor_url(arg['link']))
         elif arg['device'] != '':
             d = arg['device']
             if d in dev_name_list:
                 io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'ssh')
-                os.system('ssh ' + dev_dict[d].remote_name + "@" + dev_dict[d].remote_host)
+                os.system('ssh ' + dev_dict[d].remote_name + "@" + cor_url(dev_dict[d].remote_host))
             else:
                 print('      Device is no exist, please check the setting.')
                 search_all()
@@ -148,7 +156,7 @@ if __name__ == '__main__':
             d = io.get_default()
             if d in dev_name_list:
                 io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'ssh')
-                os.system('ssh ' + dev_dict[d].remote_name + "@" + dev_dict[d].remote_host)
+                os.system('ssh ' + dev_dict[d].remote_name + "@" + cor_url(dev_dict[d].remote_host))
             else:
                 show_default_dev(io.get_default(), io.get_list())
                 print('      The default setting is error.')
@@ -164,35 +172,35 @@ if __name__ == '__main__':
                 if arg['target'] in dev_name_list:
                     io.take_history(arg['target'], dev_dict[arg['target']].remote_host,
                                     dev_dict[arg['target']].remote_name, 'scp')
-                    com = com + i + dev_dict[arg['target']].remote_name + '@' + dev_dict[
-                        arg['target']].remote_host + ":" + arg['that']
+                    com = com + i + dev_dict[arg['target']].remote_name + '@' + cor_url(dev_dict[
+                        arg['target']].remote_host) + ":" + arg['that']
                 elif len(info) == 2:
                     io.take_history('Temporary', info[1], info[0], 'scp')
-                    com = com + i + arg['target'] + ":" + arg['that']
+                    com = com + i + cor_url(arg['target']) + ":" + arg['that']
                 else:
                     io.take_history('Temporary', '? ? ?', '? ? ?', 'scp')
-                    com = com + i + arg['target'] + ":" + arg['that']
+                    com = com + i + cor_url(arg['target']) + ":" + arg['that']
             else:
                 if arg['target'] in dev_name_list:
                     io.take_history(arg['target'], dev_dict[arg['target']].remote_host,
                                     dev_dict[arg['target']].remote_name, 'scp')
-                    com = com + i + dev_dict[arg['target']].remote_name + '@' + dev_dict[
-                        arg['target']].remote_host + ":" + def_that
+                    com = com + i + dev_dict[arg['target']].remote_name + '@' + cor_url(dev_dict[
+                        arg['target']].remote_host) + ":" + def_that
                 elif len(info) == 2:
                     io.take_history('Temporary', info[1], info[0], 'scp')
-                    com = com + i + arg['target'] + ":" + def_that
+                    com = com + i + cor_url(arg['target']) + ":" + def_that
                 else:
                     io.take_history('Temporary', '? ? ?', '? ? ?', 'scp')
-                    com = com + i + arg['target'] + ":" + def_that
+                    com = com + i + cor_url(arg['target']) + ":" + def_that
         else:
             d = io.get_default()
             if d in dev_name_list:
                 if arg['that'] != '':
                     io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'scp')
-                    com = com + i + dev_dict[d].remote_name + '@' + dev_dict[d].remote_host + ":" + arg['that']
+                    com = com + i + dev_dict[d].remote_name + '@' + cor_url(dev_dict[d].remote_host) + ":" + arg['that']
                 else:
                     io.take_history(d, dev_dict[d].remote_host, dev_dict[d].remote_name, 'scp')
-                    com = com + i + dev_dict[d].remote_name + '@' + dev_dict[d].remote_host + ":" + def_that
+                    com = com + i + dev_dict[d].remote_name + '@' + cor_url(dev_dict[d].remote_host) + ":" + def_that
         print(com)
         os.system(com)
     elif argvs[0] == '-v' or argvs[0] == '--version':

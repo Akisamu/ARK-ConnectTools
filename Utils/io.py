@@ -4,11 +4,13 @@ import xml.etree.ElementTree as et
 from Data import UserInfo
 
 version = '0.0.2'
+path = '/home/akisamu/.app/ARK-ConnectTools/config.xml'
 
 
 def check_file() -> None:
-    if not os.path.exists('config.xml'):
-        file = open('config.xml', 'a')
+    if not os.path.exists(path):
+        print('Creating config.xml')
+        file = open(path, 'a')
         file.close()
         init_xml()
 
@@ -32,11 +34,11 @@ def init_xml() -> None:
     et.SubElement(root, 'List')
     et.SubElement(root, 'History')
     tree = et.ElementTree(root)
-    tree.write('config.xml')
+    tree.write(path)
 
 
 def add_data(device: str, remote_host: str, remote_name: str) -> None:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     for item in root.iter('List'):
         dev = et.SubElement(item, 'Device')
@@ -45,26 +47,26 @@ def add_data(device: str, remote_host: str, remote_name: str) -> None:
         rh.text = remote_host
         rn = et.SubElement(dev, 'Remote_name')
         rn.text = remote_name
-    tree.write('config.xml')
+    tree.write(path)
 
 
 def set_default(device: str) -> None:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     for item in root.iter('Default'):
         item.set('device_name', device)
-    tree.write('config.xml')
+    tree.write(path)
 
 
 def get_default() -> str:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     for item in root.iter('Default'):
         return item.attrib['device_name']
 
 
 def get_list() -> dict:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     re = {}
     for item in root.iter('List'):
@@ -87,18 +89,18 @@ def get_list() -> dict:
 
 
 def del_data(name: str):
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     for item in root.iter('Device'):
         if item.attrib['device_name'] == name:
             for li in root.iter('List'):
                 print(item)
                 li.remove(item)
-    tree.write('config.xml')
+    tree.write(path)
 
 
 def take_history(device: str, remote_host: str, remote_name: str, com: str) -> None:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     for item in root.iter('History'):
         red = et.SubElement(item, 'Record')
@@ -107,20 +109,20 @@ def take_history(device: str, remote_host: str, remote_name: str, com: str) -> N
         red.set('user', remote_name)
         red.set('command', com)
         red.set('time', str(time.asctime(time.localtime(time.time()))))
-    tree.write('config.xml')
+    tree.write(path)
 
 
 def delete_history() -> None:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     for hist in root.iter('History'):
         root.remove(hist)
     et.SubElement(root, 'History')
-    tree.write('config.xml')
+    tree.write(path)
 
 
 def get_history() -> list:
-    tree = et.parse('config.xml')
+    tree = et.parse(path)
     root = tree.getroot()
     re = []
     for item in root.iter('History'):
